@@ -3,8 +3,6 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { useGetWorkspace } from "@/features/workspaces/api/use-get-workspace";
@@ -24,6 +22,7 @@ export const WorkspaceSwitcher = () => {
     const {data: workspaces, isLoading: workspacesLoading} = useGetWorkspaces()
 
     const filteredWorkspaces = workspaces?.filter((workspace) => workspace?._id !== workspaceId)
+    console.log(workspace?.name);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>

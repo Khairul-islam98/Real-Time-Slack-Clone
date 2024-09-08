@@ -78,7 +78,7 @@ export const getById = query({
         q.eq("workspaceId", args.id).eq("userId", userId)
       )
       .unique();
-    if (member) {
+    if (!member) {
       return null;
     }
     return await ctx.db.get(args.id);
