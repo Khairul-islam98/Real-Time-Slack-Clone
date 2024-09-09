@@ -22,7 +22,6 @@ export const WorkspaceSwitcher = () => {
     const {data: workspaces, isLoading: workspacesLoading} = useGetWorkspaces()
 
     const filteredWorkspaces = workspaces?.filter((workspace) => workspace?._id !== workspaceId)
-    console.log(workspace?.name);
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -39,7 +38,7 @@ export const WorkspaceSwitcher = () => {
                         <DropdownMenuItem onClick={()=> router.push(`/workspace/${workspaceId}`)} className=" cursor-pointer flex-col justify-start items-start capitalize">
                             {workspace?.name}
                             <span className="text-xs text-muted-foreground">
-                                Active workspace
+                                Active workspace 
                             </span>
                         </DropdownMenuItem>
                         {
