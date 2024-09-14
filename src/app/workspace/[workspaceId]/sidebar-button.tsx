@@ -7,6 +7,7 @@ interface SidebarButtonProps {
     icon: LucideIcon | IconType
     label: string
     isActive?: boolean
+    data?: any
 }
 
 export const SidebarButton = ({icon: Icon, label, isActive}: SidebarButtonProps) => {
