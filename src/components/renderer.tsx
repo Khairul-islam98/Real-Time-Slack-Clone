@@ -38,7 +38,7 @@ const Renderer = ({value}: RendererProps) => {
     if(isEmpty) return null
 
     return (
-        <div ref={rendererRef} className="ql-editor" />
+        <div ref={rendererRef} className="ql-renderer" />
     );
 };
 
