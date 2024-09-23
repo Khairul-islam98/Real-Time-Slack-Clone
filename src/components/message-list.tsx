@@ -1,9 +1,9 @@
 import { GetmessagesReturnType } from "@/features/messages/api/use-get-messages";
 import { differenceInMinutes, format, isToday, isYesterday } from "date-fns";
 import { Message } from "./message";
+import { ChannelHeros } from "./channel-hero";
 
-
-const TIME_THRESHOLD = 5
+const TIME_THRESHOLD = 5;
 
 interface MessageListProps {
   memberName?: string;
@@ -59,9 +59,15 @@ export const MessageList = ({
           </div>
           {messages.map((message, index) => {
             const prevMessage = messages[index - 1];
-            const isCompact = prevMessage && prevMessage.user?._id === message.user?._id &&  differenceInMinutes(new Date(message._creationTime), new Date(prevMessage._creationTime)) < TIME_THRESHOLD;
+            const isCompact =
+              prevMessage &&
+              prevMessage.user?._id === message.user?._id &&
+              differenceInMinutes(
+                new Date(message._creationTime),
+                new Date(prevMessage._creationTime)
+              ) < TIME_THRESHOLD;
             return (
-               <Message 
+              <Message
                 key={message._id}
                 id={message._id}
                 memberId={message.memberId}
@@ -74,17 +80,20 @@ export const MessageList = ({
                 updatedAt={message.updatedAt}
                 createdAt={message._creationTime}
                 isEditing={false}
-                setEditingId ={()=> {}}
+                setEditingId={() => {}}
                 isCompact={isCompact}
                 hideThreadButton={false}
                 threadCount={message.threadCount}
                 threadImage={message.threadImage}
                 threadTimestamp={message.threadTimestamp}
-               />
-            )
+              />
+            );
           })}
         </div>
       ))}
+      {variant === "channel" && channelName && channelCreationTime && (
+        <ChannelHeros name={channelName} creationTime={channelCreationTime} />
+      )}
     </div>
   );
 };
