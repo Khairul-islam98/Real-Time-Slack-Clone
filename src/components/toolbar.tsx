@@ -48,7 +48,7 @@ export const Toolbar = ({
           </Button>
         </Hint>
         )}
-        {isAuthor && (
+        {isAuthor && ( 
         <Hint label="Delete message">
           <Button variant="ghost" size="iconSm" disabled={isPending}>
             <Trash className="size-4" />
