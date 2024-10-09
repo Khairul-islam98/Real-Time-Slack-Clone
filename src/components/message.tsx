@@ -9,6 +9,7 @@ import { Toolbar } from "./toolbar";
 import { useUpdateMessage } from "@/features/messages/api/use-update-message";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
 
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
@@ -63,6 +64,8 @@ export const Message = ({
 }: MessageProps) => {
   const { mutate: updateMessage, isPending: isUpdatingMessage } =
     useUpdateMessage();
+  const { mutate: removeMessage, isPending: isRemovingMessage } =
+    useRemoveMessage();
   const isPending = isUpdatingMessage;
   const handleUpdate = ({ body }: { body: string }) => {
     updateMessage(
