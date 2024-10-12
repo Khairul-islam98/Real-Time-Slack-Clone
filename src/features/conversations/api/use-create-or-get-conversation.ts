@@ -7,7 +7,7 @@ type RequestType = {
   workspaceId: Id<"workspaces">;
   memberId: Id<"members">;
 };
-type ResponseType = Doc<"conversations"> | null;
+type ResponseType = Id<"conversations"> | null;
 type Options = {
   onSuccess?: (data: ResponseType) => void;
   onError?: (error: Error) => void;
