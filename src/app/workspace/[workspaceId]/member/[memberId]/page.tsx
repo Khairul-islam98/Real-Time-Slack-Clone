@@ -10,25 +10,30 @@ import { toast } from "sonner";
 import { Conversation } from "./conversation";
 
 const MemberIdPage = () => {
-  const memberId = useMemberId();
   const workspaceId = useWorkspaceId();
+  const memberId = useMemberId();
 
-  const [conversationId, setConversationId] = useState<Id<"conversations"> | null>(null)
-  const {mutate, isPending } = useCreateOrGetConversation();
+  const [conversationId, setConversationId] = useState<Id<"conversations"> | null>(null);
+  const { mutate, isPending } = useCreateOrGetConversation();
 
   useEffect(() => {
-    mutate({
-      memberId,
-      workspaceId,
-    }, {
-        onSuccess: (data) => {
-            setConversationId(data);
+    if (memberId && workspaceId) {
+      mutate(
+        {
+          memberId,
+          workspaceId,
         },
-        onError: (error) => {
-            toast.error("Failed to create or get conversations")
+        {
+          onSuccess: (data) => {
+            setConversationId(data);
+          },
+          onError: () => {
+            toast.error("Failed to create or get conversations");
+          },
         }
-    });
-  }, [memberId, workspaceId, mutate]);
+      );
+    }
+  }, [workspaceId, memberId, mutate]);
 
   if (isPending) {
     return (
@@ -37,18 +42,18 @@ const MemberIdPage = () => {
       </div>
     );
   }
+
   if (!conversationId) {
     return (
       <div className="h-full flex flex-col gap-y-2 items-center justify-center">
-        <AlertTriangle className="size-6  text-muted-foreground" />
-        <span className="text-sm text-muted-foreground">
-          Conversation not found
-        </span>
+        <AlertTriangle className="size-6 text-muted-foreground" />
+        <span className="text-sm text-muted-foreground">Conversation not found</span>
       </div>
     );
   }
 
-  return <Conversation id={conversationId} />
+  return <Conversation id={conversationId} />;
+
 };
 
 export default MemberIdPage;

@@ -30,7 +30,7 @@ interface SidebarItemProps {
 
 
 export const SidebarItem = ({label, icon: Icon, id, variant}:SidebarItemProps) => {
-    const workspaceId = useWorkspaceId();
+    const workspaceId = useWorkspaceId();;
     return (
         <Button variant='transparent' size='sm' className={cn(sidebarItemVariants({variant}))} asChild>
             <Link href={`/workspace/${workspaceId}/channel/${id}`}>
