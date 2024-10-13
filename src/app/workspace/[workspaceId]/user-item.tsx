@@ -27,7 +27,6 @@ interface UserItemProps {
 }
 
 export const UserItem = ({ id, label = 'Member', image, variant }: UserItemProps) => {
-  console.log({id});
   const workspaceId = useWorkspaceId();
   const avatarFallback = label.charAt(0).toUpperCase();
 
