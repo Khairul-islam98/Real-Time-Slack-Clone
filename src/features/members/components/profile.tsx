@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useGetMember } from "../api/use-get-member";
-import { AlertTriangle, Loader, XIcon } from "lucide-react";
+import { AlertTriangle, Loader, MailIcon, XIcon } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
+import Link from "next/link";
 
 interface ProfileProps {
   memberId: Id<"members">;
@@ -70,6 +71,24 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
         <p className="text-xl font-bold">{member.user.name}</p>
       </div>
       <Separator />
+      <div className="flex flex-col p-4">
+            <p className="text-sm font-bold mb-4">
+                Contact information
+            </p>
+            <div className="flex items-center gap-2">
+                <div className="size-9 rounded-md bg-muted flex items-center justify-center">
+                    <MailIcon className="size-4" />
+                </div>
+                <div className="flex flex-col">
+                    <p className="text-[13px] font-semibold text-muted-foreground">Email Address</p>
+                    <Link href={`mailto:${member.user.email}`}
+                    className="text-sm hover:underline text-[#1264a3]"
+                    >
+                        {member.user.email}
+                    </Link>
+                </div>
+            </div>
+      </div>
     </div>
   );
 };
