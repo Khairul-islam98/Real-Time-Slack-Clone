@@ -205,6 +205,7 @@ const groupedMessages = results?.reduce(
                 hideThreadButton
                 threadCount={message.threadCount}
                 threadImage={message.threadImage}
+                threadName={message.threadName}
                 threadTimestamp={message.threadTimestamp}
               />
             );
