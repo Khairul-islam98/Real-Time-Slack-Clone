@@ -17,6 +17,18 @@ import { useCurrentMember } from "../api/use-current-member";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { toast } from "sonner";
 import { useConfirm } from "@/hooks/use-confirm";
+import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
 
 interface ProfileProps {
   memberId: Id<"members">;
@@ -24,6 +36,8 @@ interface ProfileProps {
 }
 
 export const Profile = ({ memberId, onClose }: ProfileProps) => {
+
+  const router= useRouter()
   const workspaceId = useWorkspaceId();
 
   const [UpdateDialog, confirmUpdate] = useConfirm(
@@ -52,7 +66,9 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
   const { mutate: removeMember, isPending: isRemovingMember } =
     useRemoveMember();
 
-  const onRemove = () => {
+  const onRemove = async() => {
+    const ok = await confirmRemove();
+    if (!ok) return
     removeMember(
       { id: memberId },
       {
@@ -66,11 +82,14 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       }
     );
   };
-  const onLeave = () => {
+  const onLeave = async() => {
+    const ok = await confirmLeave();
+    if (!ok) return
     removeMember(
       { id: memberId },
       {
         onSuccess: () => {
+          router.replace("/")
           toast.success("You left the workspace");
           onClose();
         },
@@ -80,7 +99,9 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
       }
     );
   };
-  const onUpdate = (role: "admin" | "member") => {
+  const onUpdate = async(role: "admin" | "member") => {
+    const ok = await confirmUpdate();
+    if (!ok) return
     updateMember(
       { id: memberId, role },
       {
@@ -155,17 +176,35 @@ export const Profile = ({ memberId, onClose }: ProfileProps) => {
           {currentMember?.role === "admin" &&
           currentMember?._id !== memberId ? (
             <div className="flex items-center gap-2 mt-4">
+              <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+
               <Button variant="outline" className="w-full capitalize">
                 {member.role} <ChevronDownIcon className="size-4 ml-2" />
               </Button>
-              <Button variant="outline" className="w-full">
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-full">
+                  <DropdownMenuRadioGroup
+                    value={member.role}
+                    onValueChange={(role) => onUpdate(role as "admin" | "member")}
+                  >
+                    <DropdownMenuRadioItem value="admin">
+                      Admin
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="member">
+                      Member
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+              </DropdownMenuContent>
+              </DropdownMenu>
+              <Button onClick={onRemove} variant="outline" className="w-full">
                 Remove
               </Button>
             </div>
           ) : currentMember?._id === memberId &&
             currentMember?.role !== "admin" ? (
             <div className="mt-4">
-              <Button variant="outline" className="w-full">
+              <Button onClick={onLeave} variant="outline" className="w-full">
                 Leave
               </Button>
             </div>
