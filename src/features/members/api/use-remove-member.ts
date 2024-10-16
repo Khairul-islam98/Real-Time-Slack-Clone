@@ -5,7 +5,6 @@ import { useCallback, useMemo, useState } from "react";
 import { Doc, Id } from "../../../../convex/_generated/dataModel";
 type RequestType = {
   id: Id<"members">;
-  role: "admin" | "member";
 };
 type ResponseType = Id<"members"> | null;
 type Options = {
@@ -15,7 +14,7 @@ type Options = {
   throwError?: boolean;
 };
 
-export const useUpdateMember = () => {
+export const useRemoveMember = () => {
   const [data, setData] = useState<ResponseType>(null);
   const [error, setError] = useState<Error | null>(null);
   const [status, setStatus] = useState<
@@ -26,7 +25,7 @@ export const useUpdateMember = () => {
   const isSuccess = useMemo(() => status === "success", [status]);
   const isError = useMemo(() => status === "error", [status]);
   const isSettled = useMemo(() => status === "settled", [status]);
-  const mutation = useMutation(api.members.update);
+  const mutation = useMutation(api.members.remove);
   const mutate = useCallback(
     async (values: RequestType, options?: Options) => {
       try {
